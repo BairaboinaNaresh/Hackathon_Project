@@ -18,12 +18,6 @@ public class JavaScriptUtil {
         logger.info("JavaScript click performed on element");
     }
 
-    public static void scrollToBottom(WebDriver driver) {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-        logger.info("Scrolled to bottom of page");
-    }
-
     public static void scrollToTop(WebDriver driver) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("window.scrollTo(0, 0);");

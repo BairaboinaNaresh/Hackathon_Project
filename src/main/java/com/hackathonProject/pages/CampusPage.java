@@ -36,11 +36,17 @@ public class CampusPage {
     @FindBy(xpath = "//button[@aria-label='Close']")
     private WebElement closePopupBtn;
 
+
+    // Initializes WebDriver and PageFactory elements.
+    // Ensures all web elements are ready for interaction.
     public CampusPage() {
         this.driver = BaseClass.getDriver();
         PageFactory.initElements(driver, this);
     }
 
+
+    // Navigates to Coursera Business page.
+    // Waits for page to load and handles popup if present.
     public void navigateToForBusiness() {
     	driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(120));
         driver.get("https://www.coursera.org/business");
@@ -48,6 +54,9 @@ public class CampusPage {
         dismissPopup();
     }
 
+
+    // Scrolls to the contact form section.
+    // Waits until the form is visible before interaction.
     public void clickContactSales() {
         logger.info("Scrolling to form section");
         JavaScriptUtil.scrollByPixels(driver, 2000);
@@ -55,6 +64,10 @@ public class CampusPage {
         logger.info("Marketo form found");
     }
 
+
+    // Fills the form with provided details.
+    // Uses invalid email to trigger validation error.
+    // Waits for error message after entering email.
     public void fillFormWithInvalidEmail(String firstName, String lastName,
                                           String invalidEmail) {
         logger.info("Filling form with invalid email: " + invalidEmail);
@@ -64,7 +77,6 @@ public class CampusPage {
 
         clearAndType(lastNameField, lastName);
         logger.info("Entered Last Name: " + lastName);
-
 
         // Email LAST — triggers Marketo error tooltip on tab-out
         jsClick(emailField);
@@ -77,11 +89,16 @@ public class CampusPage {
         logger.info("Form filled successfully");
     }
 
+    // Clicks on submit button using JavaScript click.
+    // Ensures reliable clicking even if normal click fails.
     public void clickSubmit() {
         jsClick(submitBtn);
         logger.info("Submit clicked");
     }
 
+
+    // Captures and returns email error message.
+    // Handles empty message by returning default text.
     public String captureEmailErrorMessage() {
         logger.info("Capturing email error message");
         WaitUtil.waitForElementVisible(driver, emailErrorMsg);
@@ -90,18 +107,26 @@ public class CampusPage {
         return msg.isEmpty() ? "Email validation error was triggered" : msg;
     }
 
+    // Clears existing text and enters new value.
+    // Uses JS click to ensure field is properly focused.
     private void clearAndType(WebElement field, String text) {
         jsClick(field);
         field.clear();
         field.sendKeys(text);
     }
 
+
+    // Performs click action using JavaScript Executor.
+    // Scrolls element into view before clicking.
     private void jsClick(WebElement el) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].scrollIntoView({block:'center'});", el);
         js.executeScript("arguments[0].click();", el);
     }
 
+
+    // Closes popup if it is displayed on page.
+    // Prevents test interruption due to modal dialogs
     private void dismissPopup() {
         try {
             if (closePopupBtn.isDisplayed()) closePopupBtn.click();

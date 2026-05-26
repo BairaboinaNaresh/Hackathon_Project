@@ -46,11 +46,8 @@ public class HomePage {
         dismissPopup();
         logger.info("Search submitted. URL: " + driver.getCurrentUrl());
     }
- 
-    public String getPageTitle() {
-        return driver.getTitle();
-    }
- 
+
+
     private void dismissPopup() {
         try {
             if (closePopupBtn.isDisplayed()) closePopupBtn.click();

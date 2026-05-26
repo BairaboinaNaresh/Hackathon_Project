@@ -111,6 +111,7 @@
 //        }
 //    }
 //}
+
 package com.hackathonProject.base;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -134,10 +135,18 @@ public class BaseClass {
 
     private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
+
+    // Gets the browser name from configuration file.
+    // This value is used to decide which browser to launch.
     public static String getCurrentBrowser() {
 
         return ConfigReader.getProperty("browser");
     }
+
+
+ // Creates WebDriver instance based on selected browser.
+    // Applies browser options and sets implicit/page load timeouts.
+    // Stores driver in ThreadLocal for parallel execution support.
 
     public static void createDriver() {
         String browser = getCurrentBrowser();
@@ -151,8 +160,6 @@ public class BaseClass {
                 ChromeOptions chromeOptions = new ChromeOptions();
                 chromeOptions.addArguments("--start-maximized");
                 chromeOptions.addArguments("--disable-notifications");
-                chromeOptions.addArguments("--no-sandbox");
-                WebDriverManager.chromedriver().setup();
                 webDriver = new ChromeDriver(chromeOptions);
                 logger.info("Chrome browser launched");
                 break;
@@ -161,15 +168,11 @@ public class BaseClass {
                 EdgeOptions edgeOptions = new EdgeOptions();
                 edgeOptions.addArguments("--start-maximized");
                 edgeOptions.addArguments("--disable-notifications");
-                edgeOptions.addArguments("--no-sandbox");
-                edgeOptions.addArguments("--disable-dev-shm-usage");
-                edgeOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
                 webDriver = new EdgeDriver(edgeOptions);
-                logger.info("Edge browser launched with unique profile");
+                logger.info("Edge browser launched");
                 break;
 
             case "firefox":
-                WebDriverManager.firefoxdriver().setup();
                 webDriver = new FirefoxDriver();
                 logger.info("Firefox browser launched");
                 break;
@@ -193,11 +196,17 @@ public class BaseClass {
                 + ((org.openqa.selenium.remote.RemoteWebDriver) webDriver).getSessionId());
     }
 
+
+    // Returns the WebDriver instance for current thread.
+    // Ensures thread-safe driver access in parallel test runs.
     public static WebDriver getDriver() {
         return driver.get();
     }
 
 
+
+    // Closes the browser and quits WebDriver session.
+    // Removes driver from ThreadLocal to avoid memory leaks.
     public static void removeDriver() {
         if (driver.get() != null) {
             String browser = getCurrentBrowser();

@@ -47,6 +47,7 @@ public class CourseSearchSteps {
         );
         ExtentReportManager.logPass("Search results page displayed. URL: " + url);
         logger.info("Search results page verified. URL: " + url);
+        softAssert.assertAll();
     }
 
     @When("the user applies the language filter {string}")
@@ -80,6 +81,7 @@ public class CourseSearchSteps {
             "No courses were extracted from the search results!"
         );
         logger.info("Extraction complete. Got " + extractedCourses.size() + " courses.");
+        softAssert.assertAll();
     }
 
     @When("the course data is saved to an Excel file")
@@ -97,6 +99,7 @@ public class CourseSearchSteps {
 
             ExtentReportManager.logPass("Excel file saved at: " + outputPath);
             logger.info("Excel saved successfully: " + outputPath);
+            softAssert.assertAll();
         }
     }
 

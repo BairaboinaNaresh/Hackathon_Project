@@ -14,6 +14,10 @@ public class CucumberListener implements ConcurrentEventListener {
 
     private static final Logger logger = LogManager.getLogger(CucumberListener.class);
 
+
+// Registers event handlers for different Cucumber lifecycle events.
+    // Maps events like scenario start, step finish, and run completion.
+    // Ensures custom logging is triggered during execution.
     @Override
     public void setEventPublisher(EventPublisher publisher) {
         publisher.registerHandlerFor(TestCaseStarted.class, this::onScenarioStart);
@@ -22,11 +26,19 @@ public class CucumberListener implements ConcurrentEventListener {
         publisher.registerHandlerFor(TestRunFinished.class, this::onRunFinished);
     }
 
+    // Executes when a scenario starts.
+    // Logs scenario name and feature file location.
+    // Helps track execution flow in logs.
     private void onScenarioStart(TestCaseStarted event) {
         String scenarioName = event.getTestCase().getName();
         String uri = event.getTestCase().getUri().toString();
         logger.info("▶ SCENARIO STARTED: [" + scenarioName + "] in [" + uri + "]");
     }
+
+
+    // Executes after each step finishes.
+    // Logs step result such as PASSED, FAILED, SKIPPED, or PENDING.
+    // Captures step-level details for debugging.
 
     private void onStepFinished(TestStepFinished event) {
         if (event.getTestStep() instanceof PickleStepTestStep) {
@@ -56,6 +68,10 @@ public class CucumberListener implements ConcurrentEventListener {
         }
     }
 
+
+    // Executes after a scenario completes.
+    // Logs final result and execution time for the scenario.
+    // Helps measure test performance and outcome.
     private void onScenarioFinished(TestCaseFinished event) {
         String scenarioName = event.getTestCase().getName();
         Status status = event.getResult().getStatus();
@@ -69,10 +85,14 @@ public class CucumberListener implements ConcurrentEventListener {
         }
     }
 
+
+    // Executes when the entire test run finishes.
+    // Flushes Extent Reports and performs report archiving.
+    // Ensures final reporting and cleanup is completed.
+
     private void onRunFinished(TestRunFinished event) {
-        logger.info("========================================");
         logger.info("  CUCUMBER TEST RUN FINISHED");
-        logger.info("========================================");
+
 
         // Flush Extent Reports
         try {
@@ -86,6 +106,9 @@ public class CucumberListener implements ConcurrentEventListener {
         archiveCucumberReports();
     }
 
+
+    // Archives Cucumber report files with timestamp.
+    // Creates backup copies to preserve historical test runs.
     private void archiveCucumberReports() {
         String timestamp = com.hackathonProject.utils.ExtentReportManager.getTimestamp();
 
@@ -96,6 +119,9 @@ public class CucumberListener implements ConcurrentEventListener {
                  "reports/cucumber/cucumber-report_" + timestamp + ".json");
     }
 
+
+    // Copies a file from source to destination path.
+    // Used for archiving reports safely with overwrite support.
     private void copyFile(String source, String destination) {
         try {
             File src = new File(source);
