@@ -36,7 +36,12 @@ public class LanguageLearningSteps {
     @Then("all available languages with their counts should be captured and displayed")
     public void allLanguagesShouldBeCaptured() {
         logger.info("STEP: Verifying languages were captured");
+
+        // PASS: if extractedLanguages map is NOT null (data was successfully extracted)
+        // FAIL: if extractedLanguages is null → extraction method failed or did not run properly
         softAssert.assertNotNull(extractedLanguages, "Language map is null");
+        // PASS: if extractedLanguages map has at least 1 entry (languages found)
+        // FAIL: if map is null OR empty → no languages were extracted from UI
         softAssert.assertFalse(
             extractedLanguages == null || extractedLanguages.isEmpty(),
             "No languages were extracted"
@@ -51,6 +56,7 @@ public class LanguageLearningSteps {
 
         logger.info(sb.toString());
         ExtentReportManager.logInfo(sb.toString());
+        softAssert.assertAll();
 
     }
 
@@ -64,6 +70,8 @@ public class LanguageLearningSteps {
     @Then("all available levels with their counts should be captured and displayed")
     public void allLevelsShouldBeCaptured() {
         logger.info("STEP: Verifying levels were captured");
+    // PASS: if extractedLevels map is NOT null (levels were fetched successfully)
+    // FAIL: if extractedLevels is null → extraction failed or method issue
         softAssert.assertNotNull(extractedLevels, "Level map is null");
 
         StringBuilder sb = new StringBuilder("\n===== LEVELS EXTRACTED =====\n");
@@ -75,6 +83,7 @@ public class LanguageLearningSteps {
 
         logger.info(sb.toString());
         ExtentReportManager.logInfo(sb.toString());
+        softAssert.assertAll();
 
     }
 
@@ -91,8 +100,11 @@ public class LanguageLearningSteps {
             logger.info("Language count: " + actual + " >= " + minimum);
         }
 
+        // PASS: if number of extracted languages is greater than or equal to minimum value
+        // FAIL: if extractedLanguages count is less than minimum → insufficient data loaded
         softAssert.assertTrue(actual >= minimum,
             "Expected >= " + minimum + " languages but found " + actual);
+        softAssert.assertAll();
     }
 
     @Then("the level list should contain at least {int} levels")
@@ -108,6 +120,8 @@ public class LanguageLearningSteps {
             logger.info("Level count: " + actual + " >= " + minimum);
         }
 
+        // PASS: if number of extracted levels is greater than or equal to minimum value
+        // FAIL: if extractedLevels count is less than minimum → expected levels missing
         softAssert.assertTrue(actual >= minimum,
             "Expected >= " + minimum + " levels but found " + actual);
 

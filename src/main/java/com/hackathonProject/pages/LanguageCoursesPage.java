@@ -30,16 +30,23 @@ public class LanguageCoursesPage {
 
     private WebDriver driver;
 
+    // Initializes WebDriver instance from BaseClass.
+    // Prepares page for filter interactions.
     public LanguageCoursesPage() {
         this.driver = BaseClass.getDriver();
     }
 
+
+    // Navigates to Language Learning courses page.
+    // Waits for page load and closes popup if present.
     public void navigateToLanguageLearning() {
         driver.get(PAGE_URL);
         WaitUtil.waitForPageLoad(driver);
         dismissPopup();
     }
 
+    // Extracts all available language filter options.
+    // Opens filter panel, expands list, and collects language counts.
     public Map<String, Integer> extractAllLanguages() {
         logger.info("Extracting all language filter options");
         Map<String, Integer> map = new LinkedHashMap<>();
@@ -55,6 +62,9 @@ public class LanguageCoursesPage {
         return map;
     }
 
+
+    // Extracts all available level filter options.
+    // Reloads page to ensure clean filter state before extraction.
     public Map<String, Integer> extractAllLevels() {
         logger.info("Extracting all level filter options");
         Map<String, Integer> map = new LinkedHashMap<>();
@@ -77,6 +87,8 @@ public class LanguageCoursesPage {
         return map;
     }
 
+    // Opens filter panel if not already visible.
+    // Uses scroll and JavaScript click for reliability.
     private void openFilterPanel() {
         if (WaitUtil.waitForElement(driver, LANGUAGE_SECTION, 3) != null) return;
 
@@ -88,6 +100,9 @@ public class LanguageCoursesPage {
         }
     }
 
+
+    // Clicks specified filter section like Language or Level.
+    // Verifies section availability before interaction.
     private boolean clickSection(By locator, String name) {
         WebElement btn = WaitUtil.waitForElement(driver, locator, 5);
 
@@ -102,11 +117,16 @@ public class LanguageCoursesPage {
         return true;
     }
 
+    // Clicks "Show more" button if available.
+    // Expands full list of filter options.
     private void clickShowMore() {
         WebElement btn = WaitUtil.waitForElement(driver, SHOW_MORE_BTN, 3);
         if (btn != null) JavaScriptUtil.scrollAndClick(driver, btn);
     }
 
+
+    // Reads visible filter labels and extracts name and count.
+    // Removes duplicates and ignores invalid entries.
     private List<String[]> getFilterEntries() {
         List<String[]> results = new ArrayList<>();
         Set<String> seen = new HashSet<>();
@@ -127,11 +147,16 @@ public class LanguageCoursesPage {
         return results;
     }
 
+
+    // Checks whether the given name matches a known course level.
+    // Used to separate language and level filters.
     private boolean isLevel(String name) {
         return name != null && KNOWN_LEVELS.stream()
             .anyMatch(l -> name.trim().equalsIgnoreCase(l));
     }
 
+    // Closes popup if it appears on the page.
+    // Prevents modal from blocking filter interactions
     private void dismissPopup() {
         try {
             WebElement btn = driver.findElement(CLOSE_POPUP);

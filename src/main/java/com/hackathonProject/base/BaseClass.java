@@ -136,6 +136,7 @@ public class BaseClass {
     private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
 
+
     // Gets the browser name from configuration file.
     // This value is used to decide which browser to launch.
     public static String getCurrentBrowser() {

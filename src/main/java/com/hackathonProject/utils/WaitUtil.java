@@ -13,7 +13,6 @@ import java.util.List;
 public class WaitUtil {
 
     private static final Logger logger = LogManager.getLogger(WaitUtil.class);
-
     // Waits for page to fully load
     public static void waitForPageLoad(WebDriver driver) {
         new WebDriverWait(driver, Duration.ofSeconds(20))

@@ -72,17 +72,22 @@ public class EnterpriseFormSteps {
         );
         ExtentReportManager.attachScreenshot(screenshotPath);
 
+        // PASS: if error message is NOT null (message is captured from UI)
+        // FAIL: if error message is null (no message captured → validation failed)
         softAssert.assertNotNull(capturedErrorMessage, "Error message is null");
         softAssert.assertFalse(
             capturedErrorMessage == null || capturedErrorMessage.trim().isEmpty(),
             "No error message was captured for invalid email"
         );
+        softAssert.assertAll();
     }
 
     @Then("the error message should contain {string}")
     public void theErrorMessageShouldContain(String expectedText) {
         logger.info("STEP: Asserting error message contains: " + expectedText);
 
+        // PASS: if error message exists before checking content
+        // FAIL: if message is null → cannot validate content
         softAssert.assertNotNull(capturedErrorMessage, "Error message is null");
 
         if (capturedErrorMessage != null) {
@@ -95,7 +100,8 @@ public class EnterpriseFormSteps {
                 ExtentReportManager.logFail("Expected '" + expectedText + "' but got: " + capturedErrorMessage);
                 logger.error("Assertion FAILED. Expected: " + expectedText + " | Actual: " + capturedErrorMessage);
             }
-
+        // PASS: if actual error message contains expected text (case-insensitive match)
+        // FAIL: if expected text is NOT found inside actual message - incorrect validation message
             softAssert.assertTrue(matches,
                 "Expected error to contain '" + expectedText + "' but got: " + capturedErrorMessage);
         }

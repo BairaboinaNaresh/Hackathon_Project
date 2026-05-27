@@ -34,11 +34,15 @@ public class SearchResultsPage {
     @FindBy(xpath = "//button[@aria-label='Close']")
     private WebElement closePopupBtn;
 
+    // Initializes WebDriver and PageFactory elements.
+    // Prepares search results page for data extraction.
     public SearchResultsPage() {
         this.driver = BaseClass.getDriver();
         PageFactory.initElements(driver, this);
     }
 
+    // Applies language filter by updating URL parameters.
+    // Reloads page and waits for results to refresh.
     public void selectLanguageFilter(String language) {
         logger.info("Applying language filter: " + language);
         String url = driver.getCurrentUrl();
@@ -49,6 +53,9 @@ public class SearchResultsPage {
         }
     }
 
+
+    // Applies level filter by modifying search URL.
+    // Ensures results are updated after navigation.
     public void selectLevelFilter(String level) {
         logger.info("Applying level filter: " + level);
         String url = driver.getCurrentUrl();
@@ -59,6 +66,9 @@ public class SearchResultsPage {
         }
     }
 
+
+    // Extracts course details from search results page.
+    // Limits extraction to specified count and avoids duplicates.
     public List<CourseInfo> extractCourses(int count) {
         logger.info("Extracting top " + count + " courses");
         List<CourseInfo> courses = new ArrayList<>();
@@ -88,6 +98,8 @@ public class SearchResultsPage {
         return courses;
     }
 
+    // Extracts course name, rating, and duration from a single card.
+    // Uses regex patterns to handle different text formats.
     private CourseInfo extractFromCard(WebElement card, int index) {
         CourseInfo info = new CourseInfo();
         info.serialNo = index;
@@ -122,11 +134,17 @@ public class SearchResultsPage {
         return info;
     }
 
+
+    // Saves extracted course data into Excel file.
+    // Delegates writing logic to Excel utility class.
     public void saveCourseDataToExcel(List<CourseInfo> courses, String filePath) {
         logger.info("Saving " + courses.size() + " courses to Excel: " + filePath);
         ExcelDataWriter.writeCourseData(courses, filePath);
     }
 
+
+    // Closes popup if present on search results page.
+    // Prevents overlay from blocking interactions
     private void dismissPopup() {
         try {
             if (closePopupBtn.isDisplayed()) closePopupBtn.click();
