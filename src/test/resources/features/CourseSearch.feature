@@ -1,9 +1,9 @@
-# ============================================================
+
 # Feature: Course Search
 # Flow 1 - Search for web development courses (Beginner, English)
 #           Extract first 5 course names, hours, ratings
 #           Save to Excel using Apache POI
-# ============================================================
+
 
 @CourseSearch
 Feature: Course Search - Web Development Courses

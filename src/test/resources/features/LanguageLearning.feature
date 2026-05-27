@@ -1,10 +1,10 @@
-# ============================================================
+
 # Feature: Language Learning
 # Flow 2 - Navigate to Language Learning section
 #           Extract all available languages with course counts
 #           Extract all level options with course counts
 #           Display / assert the results
-# ============================================================
+
 
 @LanguageLearning
 Feature: Language Learning - Extract Languages and Levels

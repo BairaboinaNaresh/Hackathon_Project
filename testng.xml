@@ -2,24 +2,10 @@
 
 <suite name="CourseraAutomationSuite" parallel="classes" thread-count="3" verbose="1">
 
-    <test name="CourseraTests" preserve-order="true">
+    <test name="CourseraTests" >
         <classes>
             <class name="com.hackathonProject.runners.TestRunner"/>
         </classes>
     </test>
 
-	<!--<test name="Chrome Tests">
-        <parameter name="browser" value="chrome"/>
-        <classes>
-            <class name="com.hackathonProject.runners.TestRunner"/>
-        </classes>
-    </test>
-
-    <test name="Edge Tests">
-        <parameter name="browser" value="edge"/>
-        <classes>
-            <class name="com.hackathonProject.runners.TestRunner"/>
-        </classes>
-    </test>
-    -->
 </suite>

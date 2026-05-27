@@ -39,7 +39,7 @@
             <version>${selenium.version}</version>
         </dependency>
 
-        <!-- WebDriverManager -->
+
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>

@@ -4,11 +4,11 @@ import io.cucumber.plugin.ConcurrentEventListener;
 import io.cucumber.plugin.event.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
+//
+//import java.io.File;
+//import java.nio.file.Files;
+//import java.nio.file.Path;
+//import java.nio.file.StandardCopyOption;
 
 public class CucumberListener implements ConcurrentEventListener {
 
@@ -39,7 +39,6 @@ public class CucumberListener implements ConcurrentEventListener {
     // Executes after each step finishes.
     // Logs step result such as PASSED, FAILED, SKIPPED, or PENDING.
     // Captures step-level details for debugging.
-
     private void onStepFinished(TestStepFinished event) {
         if (event.getTestStep() instanceof PickleStepTestStep) {
             PickleStepTestStep step = (PickleStepTestStep) event.getTestStep();
@@ -48,22 +47,22 @@ public class CucumberListener implements ConcurrentEventListener {
 
             switch (result.getStatus()) {
                 case PASSED:
-                    logger.info("   ✓ STEP PASSED: " + stepText);
+                    logger.info("   STEP PASSED: " + stepText);
                     break;
                 case FAILED:
-                    logger.error("   ✗ STEP FAILED: " + stepText);
+                    logger.error("   STEP FAILED: " + stepText);
                     if (result.getError() != null) {
                         logger.error("     Error: " + result.getError().getMessage());
                     }
                     break;
                 case SKIPPED:
-                    logger.warn("   ⊘ STEP SKIPPED: " + stepText);
+                    logger.warn("   STEP SKIPPED: " + stepText);
                     break;
                 case PENDING:
-                    logger.warn("   ? STEP PENDING: " + stepText);
+                    logger.warn("   STEP PENDING: " + stepText);
                     break;
                 default:
-                    logger.info("   ~ STEP [" + result.getStatus() + "]: " + stepText);
+                    logger.info("   STEP [" + result.getStatus() + "]: " + stepText);
             }
         }
     }
@@ -78,9 +77,9 @@ public class CucumberListener implements ConcurrentEventListener {
         double durationSeconds = event.getResult().getDuration().toNanos() / 1_000_000_000.0;
 
         if (status == Status.PASSED) {
-            logger.info(String.format("■ SCENARIO PASSED: [%s] in %.2fs", scenarioName, durationSeconds));
+            logger.info(String.format("SCENARIO PASSED: [%s] in %.2fs", scenarioName, durationSeconds));
         } else {
-            logger.error(String.format("■ SCENARIO FAILED: [%s] in %.2fs | Status: %s",
+            logger.error(String.format("SCENARIO FAILED: [%s] in %.2fs | Status: %s",
                 scenarioName, durationSeconds, status));
         }
     }
@@ -102,37 +101,6 @@ public class CucumberListener implements ConcurrentEventListener {
             logger.error("Could not flush Extent Reports: " + e.getMessage());
         }
 
-        // Archive Cucumber reports with timestamp
-       // archiveCucumberReports();
+
     }
-
-//
-//    // Archives Cucumber report files with timestamp.
-//    // Creates backup copies to preserve historical test runs.
-//    private void archiveCucumberReports() {
-//        String timestamp = com.hackathonProject.utils.ExtentReportManager.getTimestamp();
-//
-//        copyFile("reports/cucumber/cucumber-report.html",
-//                 "reports/cucumber/cucumber-report_" + timestamp + ".html");
-//
-//        copyFile("reports/cucumber/cucumber-report.json",
-//                 "reports/cucumber/cucumber-report_" + timestamp + ".json");
-//    }
-
-/*
-    // Copies a file from source to destination path.
-    // Used for archiving reports safely with overwrite support.
-    private void copyFile(String source, String destination) {
-        try {
-            File src = new File(source);
-            if (src.exists()) {
-                Files.copy(src.toPath(), Path.of(destination), StandardCopyOption.REPLACE_EXISTING);
-                logger.info("Report archived: " + destination);
-            }
-        } catch (Exception e) {
-            logger.warn("Could not archive report: " + e.getMessage());
-        }
-    }
-    */
-
 }

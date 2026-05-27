@@ -1,4 +1,4 @@
-# ============================================================
+#
 # Feature: Enterprise / Business Form Validation
 # Flow 3 - Go to Coursera For Business
 #           Fill "Ready to learn more?" contact form
@@ -12,7 +12,6 @@
 # The assertion checks for "valid email" which covers the
 # invalid-email case, OR we also accept "required" if the form
 # validation triggers a required-field error.
-# ============================================================
 
 @EnterpriseForm
 Feature: Business Contact Form - Invalid Email Validation
@@ -23,6 +22,6 @@ Feature: Business Contact Form - Invalid Email Validation
     When the user clicks on Contact Sales
     And the user fills the contact form with the following details:
       | firstName | lastName | email                  |
-      | Bairaboina  | Naresh    | Nareshcognizat.com   |
+      | Bairaboina  | Naresh    | Nareshcognizant.com   |
     Then an email validation error message should be displayed
     And the error message should contain "valid email"

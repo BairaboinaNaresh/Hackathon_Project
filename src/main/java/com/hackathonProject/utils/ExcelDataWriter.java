@@ -8,7 +8,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.hackathonProject.pages.SearchResultsPage.CourseInfo;
 
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Cell;
+//import org.apache.poi.ss.usermodel.Cell;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
